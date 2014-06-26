@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	
+	<script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="js/video.js" type="text/javascript"></script>
+	<script src="js/bigvideo.js" type="text/javascript"></script>
+	<script src="js/marquee.js" type="text/javascript"></script>
+	<script src="js/bingo.js" type="text/javascript"></script>
+	
+	<link rel="stylesheet" type="text/css" href="css/bingo.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="css/bigvideo.css" media="all" />
+	
+	<title>Bingo</title>
+</head>
+<body>
+	<div id="wrapper">
+		<header></header>
+		<div class="alert" id="alert-linea"><span>Línea</span></div>
+		<div class="alert" id="alert-bingo"><span>Bingo</span></div>
+		<div id="col-wrapper">
+			<section id="col-left">
+				<section class="stage">
+					<figure class="ball"><span id="display"></span><span class="shadow"></span></figure>
+				</section>
+				<div id="ultimas">
+					<span id="ultima_1">-</span>
+					<span id="ultima_2">-</span>
+					<span id="ultima_3">-</span>
+					<div>Últimas bolillas</div>
+				</div>
+			</section>
+			<section id="col-right">
+				<ul id="panel"></ul>
+			</section>
+		</div>
+		<footer>
+			<div id="marquee"><div></div></div>
+		</footer>
+	</div>
+	<script>
+		var bingo, confirmrestart = false;
+		$(function()
+		{
+			var BV = new $.BigVideo();
+			BV.init();
+			BV.show(['vid/bg.mp4'],{ambient:true});
+	
+			bingo = new Bingo();
+			$(document).keypress(function(e)
+			{
+				switch(e.keyCode)
+				{
+					case 115: // S
+						bingo.sortear();
+						break;
+					case 112: // P
+						if(bingo.confirmrestart)
+						{
+							bingo.confirmrestart = false;
+							bingo.restart();
+						}
+						else
+						{
+							bingo.confirmrestart = true;
+						}
+						break;
+					case 108: // L
+						bingo.alertLinea();
+						break;
+					case 98: // B
+						bingo.alertBingo();
+						break;
+					case 124: // |
+						bingo.clearAlert();
+						break;
+				}
+			});
+		});
+		
+		window.onbeforeunload = function(){ return ''; };
+	</script>
+</body>
+</html>
